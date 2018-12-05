@@ -24,7 +24,6 @@ import java.text.ParseException;
 
 public class KampaActivity extends AppCompatActivity {
 
-    private LinearLayout parentLinearLayout;
     private ConstraintLayout parentLayout;
     private int TJ;
 
@@ -33,7 +32,6 @@ public class KampaActivity extends AppCompatActivity {
 
     private TextView text;
     private TextView piikkiText;
-    private ConstraintSet set;
 
 
     @Override
@@ -77,7 +75,7 @@ public class KampaActivity extends AppCompatActivity {
         parentLayout.addView(p2,parentLayout.getChildCount() - 1);
         ConstraintLayout.LayoutParams p = (ConstraintLayout.LayoutParams) p2.getLayoutParams();
         p.topToTop = parentLayout.getId();
-        p.topMargin = 10 * i;
+        p.topMargin = 10 + 10 * i;
         p2.requestLayout();
 
         //set.connect(im.getId(),ConstraintSet.TOP,parentLayout.getId(),ConstraintSet.TOP, 10 );
@@ -86,31 +84,35 @@ public class KampaActivity extends AppCompatActivity {
     }
 
     public void onDelete(View v) {
-        int piikit = parentLayout.getChildCount();
-        if(piikit > TJ){
-            parentLayout.removeView((View) v.getParent());
+            int piikit = parentLayout.getChildCount();
+            parentLayout.removeView((LinearLayout)v.getParent());
             piikkiText.setText(String.format("%d",piikit - 1));
             sharedPrefsEditor.putInt(getString(R.string.saved_kampa_key),piikit - 1);
             sharedPrefsEditor.apply();
-        }else{
-            text.setVisibility(TextView.VISIBLE);
-        }
+
 
 
     }
 
-    public void startAnim(View v){
-        LinearLayout l = (LinearLayout)parentLayout.getChildAt(parentLayout.getChildCount() - 1);
-        final ImageView im = (ImageView) l.getChildAt(0);
-       AnimatedVectorDrawable d = (AnimatedVectorDrawable) im.getDrawable();
-        //AnimatedVectorDrawable anim = (AnimatedVectorDrawable)im.getBackground();
-        d.registerAnimationCallback(new Animatable2.AnimationCallback() {
-            @Override
-            public void onAnimationEnd(Drawable drawable) {
-                onDelete(im);
-            }
-        });
-        d.start();
+    public void startAnim(final View v){
+
+        if(parentLayout.getChildCount() > TJ){
+
+            //LinearLayout l = (LinearLayout)parentLayout.getChildAt(parentLayout.getChildCount() - 1);
+            //final ImageView im = (ImageView) l.getChildAt(0);
+            AnimatedVectorDrawable d = (AnimatedVectorDrawable) ((ImageView) v).getDrawable();
+            //AnimatedVectorDrawable anim = (AnimatedVectorDrawable)im.getBackground();
+            d.registerAnimationCallback(new Animatable2.AnimationCallback() {
+                @Override
+                public void onAnimationEnd(Drawable drawable) {
+                    onDelete(v);
+                }
+            });
+            d.start();
+
+        }else{
+            text.setVisibility(TextView.VISIBLE);
+        }
     }
 
     public void loadKampa(){
@@ -129,15 +131,9 @@ public class KampaActivity extends AppCompatActivity {
 
         text.setVisibility(TextView.INVISIBLE);
 
-        set = new ConstraintSet();
-        set.clone(parentLayout);
-
         for(int i = 0; i < piikit; i++){
             addPiikki(i);
         }
-
-        //set.applyTo(parentLayout);
-        //parentLayout.setConstraintSet(set);
 
         piikkiText.setText(String.format("%d",parentLayout.getChildCount()));
 

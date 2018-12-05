@@ -7,11 +7,11 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:adjustViewBounds="false"
         android:clickable="true"
         android:onClick="startAnim"
-        android:scaleType="fitCenter"
+        android:scaleType="fitStart"
         app:srcCompat="@drawable/piikki_vector_anim" />
 </LinearLayout>
