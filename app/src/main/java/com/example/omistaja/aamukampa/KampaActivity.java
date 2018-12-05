@@ -4,17 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +28,6 @@ public class KampaActivity extends AppCompatActivity {
 
     private TextView text;
     private TextView piikkiText;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +53,7 @@ public class KampaActivity extends AppCompatActivity {
         parentLayout = findViewById(R.id.parent_constraint_layout);
 
         loadKampa();
+
 
 
     }
@@ -98,6 +94,9 @@ public class KampaActivity extends AppCompatActivity {
 
         if(parentLayout.getChildCount() > TJ){
 
+            final MediaPlayer player = MediaPlayer.create(this,R.raw.snap);
+            player.start();
+
             //LinearLayout l = (LinearLayout)parentLayout.getChildAt(parentLayout.getChildCount() - 1);
             //final ImageView im = (ImageView) l.getChildAt(0);
             AnimatedVectorDrawable d = (AnimatedVectorDrawable) ((ImageView) v).getDrawable();
@@ -106,6 +105,7 @@ public class KampaActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Drawable drawable) {
                     onDelete(v);
+                    player.release();
                 }
             });
             d.start();
