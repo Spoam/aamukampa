@@ -1,5 +1,6 @@
 package com.example.omistaja.aamukampa;
 
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Animatable2;
@@ -7,9 +8,12 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +32,11 @@ public class KampaActivity extends AppCompatActivity {
 
     private TextView text;
     private TextView piikkiText;
+
+    private MediaPlayer player;
+
+    private View scrollListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +62,18 @@ public class KampaActivity extends AppCompatActivity {
         parentLayout = findViewById(R.id.parent_constraint_layout);
 
         loadKampa();
+        player = MediaPlayer.create(this,R.raw.comb);
+    }
 
-
-
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        return true;
     }
 
     private void addPiikki(int i) {
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View p2 = inflater.inflate(R.layout.piikki,null);
+        LinearLayout p2 = (LinearLayout) inflater.inflate(R.layout.piikki,null);
 
         /*ImageView im = new AppCompatImageView(this);
         im.setImageDrawable(getDrawable(R.drawable.piikki_vector_anim));
@@ -73,6 +86,26 @@ public class KampaActivity extends AppCompatActivity {
         p.topToTop = parentLayout.getId();
         p.topMargin = 10 + 10 * i;
         p2.requestLayout();
+
+        final View p3 =  p2.getChildAt(0);
+        p3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    player.start();
+                }
+                else if(event.getAction() != MotionEvent.ACTION_DOWN){
+                    player.pause();
+                    player.seekTo(0);
+                    if(event.getEventTime() - event.getDownTime() < 150){
+                        startAnim(p3);
+                    }
+
+                }
+                return true;
+            }
+        });
 
         //set.connect(im.getId(),ConstraintSet.TOP,parentLayout.getId(),ConstraintSet.TOP, 10 );
 
@@ -91,7 +124,6 @@ public class KampaActivity extends AppCompatActivity {
     }
 
     public void startAnim(final View v){
-
         if(parentLayout.getChildCount() > TJ){
 
             final MediaPlayer player = MediaPlayer.create(this,R.raw.snap);
