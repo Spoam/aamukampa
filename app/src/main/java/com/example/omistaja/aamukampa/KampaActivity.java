@@ -158,6 +158,9 @@ public class KampaActivity extends AppCompatActivity {
 
     private void createKampa(int piikit){
 
+        if(piikit < 0 ) piikit = 0;
+        if(piikit > 347) piikit = 347;
+
         parentLayout.removeAllViews();
         //parentLinearLayout.removeAllViews();
 
