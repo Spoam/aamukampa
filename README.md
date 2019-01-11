@@ -13,13 +13,16 @@ Koska intissä on tylsää
 
 3.Näyttää joka aamu TJ:n ilmoituksella
 
+4.Piikkien poistaminen on animoitu
+
+5.Kammasta lähtee kammalta odotettavat äänet
+
 ## Suunnitellut ominaisuudet
-1.Animaatio piikin poistamiselle
 
-2.Äänitehosteet piikin poistamiselle
+1.Virheenkäsittely kamman luonnille
 
-3.Automaattisesti skaalautuva kamman koko piikkien määrän perusteella
+2.Automaattisesti skaalautuva kamman koko piikkien määrän perusteella
 
-4.Parempi käyttöliittymä
+3.Parempi käyttöliittymä
 
-5.Jotain spesiaalia tietyille TJ päiville esim. TJ100 ja TJ0 
+4.Jotain spesiaalia tietyille TJ päiville esim. TJ100 ja TJ0 
